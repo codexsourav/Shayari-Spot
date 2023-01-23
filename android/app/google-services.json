@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1028632667742",
+    "project_id": "shayarisspot",
+    "storage_bucket": "shayarisspot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028632667742:android:1b6174db6a58909162f6cf",
+        "android_client_info": {
+          "package_name": "com.codexsourav.shayarispot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028632667742-ig4sbpvf0frntu2ita401r0qkevlvu09.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbWaiF_8vgACuCZXtRZkSbNA7YKqGHu4A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028632667742-ig4sbpvf0frntu2ita401r0qkevlvu09.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
