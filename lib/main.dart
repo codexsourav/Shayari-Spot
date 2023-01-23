@@ -13,7 +13,9 @@ void main() async {
   if (AdsId().showads) {
     AppOpenAdManager().loadAd();
   }
-  runApp(const Mainapp());
+  runApp(
+    Mainapp(),
+  );
 }
 
 class Mainapp extends StatelessWidget {
