@@ -1,7 +1,10 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:mysyri/Models/appinfo.dart';
 import 'package:mysyri/Models/constents.dart';
+import 'package:mysyri/Pages/EditPage.dart';
 import 'package:mysyri/res/MySnackBox.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -28,21 +31,36 @@ Widget shyriBox({required context, required String name}) {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                  onPressed: () {
-                    FlutterClipboard.copy('$name \n \n ${shareSiteUrl.toString()}').then((value) {
-                      ScaffoldMessenger.of(context).showSnackBar(mysnackbar(
-                          color: alertcolor,
-                          msg: "Copy To Clipbord",
-                          onpress: () {
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          }));
-                    });
-                  },
-                  icon: Icon(
-                    Icons.copy,
-                    size: 20,
-                    color: tpiconcolor,
-                  )),
+                onPressed: () {
+                  FlutterClipboard.copy('$name \n \n ${shareSiteUrl.toString()}').then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(mysnackbar(
+                        color: alertcolor,
+                        msg: "Copy To Clipbord",
+                        onpress: () {
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        }));
+                  });
+                },
+                icon: Icon(
+                  Icons.copy,
+                  size: 20,
+                  color: tpiconcolor,
+                ),
+              ),
+              // IconButton(
+              //   onPressed: () {
+
+              //   },
+              //   icon: Icon(FontAwesomeIcons.heartCircleCheck, size: 20, color: tpiconcolor),
+              // ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => EditPage(shayari: name.toString()),
+                  ));
+                },
+                icon: Icon(FontAwesomeIcons.penClip, size: 18, color: tpiconcolor),
+              ),
               IconButton(
                 onPressed: () {
                   Share.share('$name \n \n ${shareSiteUrl.toString()}');

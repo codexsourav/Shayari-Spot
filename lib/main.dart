@@ -14,7 +14,7 @@ void main() async {
     AppOpenAdManager().loadAd();
   }
   runApp(
-    Mainapp(),
+    const Mainapp(),
   );
 }
 

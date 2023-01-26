@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 import 'package:mysyri/Models/ads/adsid.dart';
 import 'package:mysyri/Models/appinfo.dart';
 import 'package:mysyri/res/MybannerAd.dart';
@@ -80,6 +81,7 @@ class _ShriPageState extends State<ShriPage> {
           itemBuilder: (context, index) {
             List data = widget.content;
             data = data.reversed.toList();
+
             return shyriBox(context: context, name: data[index]);
           },
         ),

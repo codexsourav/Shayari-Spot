@@ -8,7 +8,7 @@ const String apptitle = "Shayari Spot";
 Brightness statusbaricon = Brightness.light;
 String dvtheme = brightness.name;
 // colors app
-Color bgcolor = dvtheme != 'dark' ? const Color.fromARGB(255, 75, 44, 133) : const Color.fromARGB(255, 22, 21, 21);
+Color bgcolor = dvtheme != 'dark' ? Color.fromARGB(255, 75, 44, 133) : Color.fromARGB(255, 22, 21, 21);
 Color boxcolor = dvtheme != 'dark' ? const Color.fromARGB(68, 120, 62, 187) : const Color.fromARGB(255, 51, 51, 51);
 Color iconcolor = dvtheme != 'dark' ? const Color.fromARGB(255, 255, 255, 255) : const Color.fromARGB(255, 255, 255, 255);
 Color whitecolor = dvtheme != 'dark' ? const Color.fromARGB(255, 255, 255, 255) : const Color.fromARGB(255, 255, 255, 255);
@@ -19,6 +19,7 @@ Color blackcolor = dvtheme != 'dark' ? const Color.fromARGB(255, 0, 0, 0) : cons
 Color alertblackcolor = dvtheme != 'dark' ? const Color.fromARGB(255, 22, 22, 22) : const Color.fromARGB(255, 54, 54, 54);
 Color alertcolor = dvtheme != 'dark' ? const Color.fromARGB(255, 105, 66, 179) : const Color.fromARGB(255, 43, 43, 43);
 Color tpiconcolor = dvtheme != 'dark' ? const Color.fromARGB(117, 255, 255, 255) : const Color.fromARGB(137, 255, 255, 255);
+Color bgbottambarcolor = dvtheme != 'dark' ? Color.fromARGB(108, 69, 36, 131) : Color.fromARGB(94, 0, 0, 0);
 
 // socail media info
 const String websiteurl = 'https://codexsourav.vercel.app/';

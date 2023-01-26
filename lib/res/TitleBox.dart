@@ -17,7 +17,7 @@ Widget TitleBox({context, String title = "", required List data}) {
           );
         },
         child: Container(
-            margin: const EdgeInsets.only(top: 15, bottom: 6),
+            margin: const EdgeInsets.only(top: 15, bottom: 5),
             padding: const EdgeInsets.symmetric(horizontal: 20),
             width: double.infinity,
             decoration: BoxDecoration(color: boxcolor, borderRadius: BorderRadius.circular(10)),
