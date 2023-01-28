@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'package:mysyri/Models/ads/adsid.dart';
@@ -19,6 +20,9 @@ class ShriPage extends StatefulWidget {
 
 class _ShriPageState extends State<ShriPage> {
   var adload;
+  final t2s = FlutterTts();
+  late var playindex = null;
+
   @override
   void initState() {
     super.initState();
@@ -40,12 +44,42 @@ class _ShriPageState extends State<ShriPage> {
   }
 
   Future<bool> _willPopCallback() async {
+    t2s.stop();
     if (adload != null) {
       adload.show();
       return true;
     } else {
       return true;
     }
+  }
+
+// sppeek shayari
+
+  speek(text) async {
+    await t2s.setLanguage('hi-IN');
+    await t2s.setPitch(1);
+    await t2s.speak(text);
+    t2s.setCompletionHandler(() {
+      setState(() {
+        playindex = null;
+      });
+    });
+  }
+
+// lets speek
+  palyshayari(name, index) async {
+    if (index == playindex) {
+      await t2s.pause();
+      setState(() {
+        playindex = null;
+      });
+      return false;
+    }
+    setState(() {
+      playindex = index;
+    });
+    t2s.stop();
+    speek(name.toString());
   }
 
   @override
@@ -82,7 +116,7 @@ class _ShriPageState extends State<ShriPage> {
             List data = widget.content;
             data = data.reversed.toList();
 
-            return shyriBox(context: context, name: data[index]);
+            return shyriBox(context: context, name: data[index], palyshayari: palyshayari, index: index, playindex: playindex);
           },
         ),
         bottomNavigationBar: Container(color: Colors.transparent, child: getAds(adsize: AdSize.banner)),

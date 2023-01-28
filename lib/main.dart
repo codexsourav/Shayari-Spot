@@ -23,6 +23,7 @@ class Mainapp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // showPerformanceOverlay: true,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
           secondary: bgcolor,

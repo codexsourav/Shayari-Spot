@@ -1,5 +1,6 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:mysyri/Models/appinfo.dart';
@@ -8,7 +9,7 @@ import 'package:mysyri/Pages/EditPage.dart';
 import 'package:mysyri/res/MySnackBox.dart';
 import 'package:share_plus/share_plus.dart';
 
-Widget shyriBox({required context, required String name}) {
+Widget shyriBox({required context, required String name, required palyshayari, index, playindex}) {
   return Column(
     children: [
       Container(
@@ -33,12 +34,15 @@ Widget shyriBox({required context, required String name}) {
               IconButton(
                 onPressed: () {
                   FlutterClipboard.copy('$name \n \n ${shareSiteUrl.toString()}').then((value) {
-                    ScaffoldMessenger.of(context).showSnackBar(mysnackbar(
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      mysnackbar(
                         color: alertcolor,
                         msg: "Copy To Clipbord",
                         onpress: () {
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        }));
+                        },
+                      ),
+                    );
                   });
                 },
                 icon: Icon(
@@ -47,19 +51,19 @@ Widget shyriBox({required context, required String name}) {
                   color: tpiconcolor,
                 ),
               ),
-              // IconButton(
-              //   onPressed: () {
-
-              //   },
-              //   icon: Icon(FontAwesomeIcons.heartCircleCheck, size: 20, color: tpiconcolor),
-              // ),
               IconButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => EditPage(shayari: name.toString()),
                   ));
                 },
-                icon: Icon(FontAwesomeIcons.penClip, size: 18, color: tpiconcolor),
+                icon: Icon(FontAwesomeIcons.pen, size: 15, color: tpiconcolor),
+              ),
+              IconButton(
+                onPressed: () {
+                  palyshayari(name.toString(), index);
+                },
+                icon: playindex != index ? Icon(Icons.play_arrow_rounded, size: 30, color: tpiconcolor) : Icon(Icons.pause_rounded, size: 30, color: tpiconcolor),
               ),
               IconButton(
                 onPressed: () {

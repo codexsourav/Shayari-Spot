@@ -128,6 +128,9 @@ class _EditPageState extends State<EditPage> {
       mysnackbar(
         msg: "Downloading Complete",
         color: alertblackcolor,
+        onpress: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
         icon: Icon(
           Icons.download_done_rounded,
           color: iconcolor,
