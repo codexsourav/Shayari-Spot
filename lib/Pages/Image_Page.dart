@@ -20,7 +20,7 @@ class _ImagePageState extends State<ImagePage> {
   loadadinst() {
     if (AdsId().showads) {
       InterstitialAd.load(
-          adUnitId: AdsId().adsInterstitialVideo,
+          adUnitId: AdsId().adsInterstitial,
           request: const AdRequest(),
           adLoadCallback: InterstitialAdLoadCallback(
             onAdLoaded: (InterstitialAd ad) {
@@ -44,7 +44,8 @@ class _ImagePageState extends State<ImagePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: FirebaseFirestore.instance.collection('images').doc("walpaper").get(),
+      future:
+          FirebaseFirestore.instance.collection('images').doc("walpaper").get(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data!.data() == null) {

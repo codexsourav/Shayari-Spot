@@ -8,7 +8,7 @@ import Foundation
 import cloud_firestore
 import firebase_core
 import flutter_tts
-import path_provider_macos
+import path_provider_foundation
 import share_plus
 import sqflite
 import url_launcher_macos

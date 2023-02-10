@@ -12,6 +12,7 @@ import 'package:mysyri/res/MySnackBox.dart';
 import 'package:mysyri/res/editpage/Fontabs.dart';
 import 'package:mysyri/res/editpage/ImgNav.dart';
 import 'package:mysyri/res/editpage/NavItem.dart';
+import 'package:mysyri/res/editpage/Watermark.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
@@ -30,6 +31,8 @@ class _EditPageState extends State<EditPage> {
   late TextEditingController textcontroller;
   WidgetsToImageController imgcontroller = WidgetsToImageController();
   var adload;
+  late RewardedInterstitialAd rewordedad;
+  bool pro = false;
 
 // loadadfunction
   loaads() {
@@ -50,6 +53,24 @@ class _EditPageState extends State<EditPage> {
     }
   }
 
+// set reworded ads
+  rewordadsload() async {
+    await RewardedInterstitialAd.load(
+      adUnitId: AdsId().rewardedads,
+      request: const AdRequest(),
+      rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          rewordedad = ad;
+        },
+        onAdFailedToLoad: (e) {
+          if (kDebugMode) {
+            print('////////// Ads Load Field');
+          }
+        },
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -58,6 +79,7 @@ class _EditPageState extends State<EditPage> {
 
 // fo ads
     loaads();
+    rewordadsload();
   }
 
   int clicktab = 0;
@@ -144,6 +166,32 @@ class _EditPageState extends State<EditPage> {
     }
   }
 
+  proPopup() async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      mysnackbar(
+        msg: "   Show A Video To Remove Watermark",
+        color: const Color.fromARGB(255, 105, 98, 0),
+        onpress: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          if (rewordedad != null) {
+            rewordedad.show(
+                onUserEarnedReward: (AdWithoutView ad, RewardItem rewardItem) {
+              setState(() {
+                pro = true;
+              });
+            });
+          } else {
+            rewordadsload();
+          }
+        },
+        icon: Icon(
+          FontAwesomeIcons.crown,
+          color: iconcolor,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var swidth = MediaQuery.of(context).size.width - 50;
@@ -191,6 +239,14 @@ class _EditPageState extends State<EditPage> {
           ),
           actions: [
             IconButton(
+              disabledColor: Colors.yellow,
+              onPressed: !pro ? proPopup : null,
+              icon: const Icon(
+                FontAwesomeIcons.crown,
+                size: 18,
+              ),
+            ),
+            IconButton(
               disabledColor: inactivecolor,
               onPressed: !loading ? saveimage : null,
               icon: const Icon(
@@ -229,7 +285,10 @@ class _EditPageState extends State<EditPage> {
                     child: Stack(
                       children: [
                         BackdropFilter(
-                          filter: new ImageFilter.blur(sigmaX: bgblur, sigmaY: bgblur),
+                          filter: ImageFilter.blur(
+                            sigmaX: bgblur,
+                            sigmaY: bgblur,
+                          ),
                           child: Container(
                             color: sbgcolor,
                           ),
@@ -258,6 +317,7 @@ class _EditPageState extends State<EditPage> {
                             ),
                           ),
                         ),
+                        !pro ? watermark() : const SizedBox(width: 0),
                       ],
                     ),
                   ),
@@ -409,7 +469,8 @@ class _EditPageState extends State<EditPage> {
   Widget alertColor({type}) {
     return AlertDialog(
       insetPadding: const EdgeInsets.all(10),
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0))),
       content: SizedBox(
         height: 400,
         child: ColorPicker(
@@ -456,7 +517,8 @@ class _EditPageState extends State<EditPage> {
     return AlertDialog(
       backgroundColor: bgcolor,
       insetPadding: const EdgeInsets.all(10),
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0))),
       content: Container(
         height: 190,
         child: Column(

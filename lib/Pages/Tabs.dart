@@ -29,7 +29,8 @@ class _TabsState extends State<Tabs> {
     super.initState();
     pages = [HomePage(controller: controller), const ImagePage()];
     controller.addListener(() {
-      bool res = controller.position.userScrollDirection != ScrollDirection.forward;
+      bool res =
+          controller.position.userScrollDirection != ScrollDirection.forward;
       if (res != _showBottam) {
         setState(() {
           _showBottam = res;
@@ -66,7 +67,8 @@ class _TabsState extends State<Tabs> {
           centerTitle: true,
           title: Text(
             apptitle,
-            style: TextStyle(color: whitecolor, fontSize: 15, fontWeight: FontWeight.w300),
+            style: TextStyle(
+                color: whitecolor, fontSize: 15, fontWeight: FontWeight.w300),
           ),
           actions: [
             IconButton(
@@ -91,59 +93,63 @@ class _TabsState extends State<Tabs> {
                 filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  color: bgbottambarcolor,
+                  color: tabNum == 0
+                      ? bgbottambarcolor
+                      : const Color.fromARGB(94, 0, 0, 0),
                   width: MediaQuery.of(context).size.width - 180,
                   height: 60,
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                    IconButton(
-                      splashColor: Colors.transparent,
-                      color: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      onPressed: () {
-                        setState(() {
-                          tabNum = 0;
-                        });
-                      },
-                      icon: Icon(
-                        FontAwesomeIcons.bookOpenReader,
-                        color: tabNum == 0 ? iconcolor : inactivecolor,
-                      ),
-                    ),
-                    IconButton(
-                      splashColor: Colors.transparent,
-                      color: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      onPressed: () {
-                        setState(() {
-                          tabNum = 1;
-                        });
-                      },
-                      icon: Icon(
-                        FontAwesomeIcons.solidImage,
-                        color: tabNum == 1 ? iconcolor : inactivecolor,
-                      ),
-                    ),
-                    // IconButton(
-                    //   splashColor: Colors.transparent,
-                    //   color: Colors.transparent,
-                    //   hoverColor: Colors.transparent,
-                    //   highlightColor: Colors.transparent,
-                    //   focusColor: Colors.transparent,
-                    //   onPressed: () {
-                    //     setState(() {
-                    //       tabNum = 2;
-                    //     });
-                    //   },
-                    //   icon: Icon(
-                    //     FontAwesomeIcons.heartPulse,
-                    //     color: tabNum == 2 ? iconcolor : inactivecolor,
-                    //   ),
-                    // ),
-                  ]),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          splashColor: Colors.transparent,
+                          color: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          onPressed: () {
+                            setState(() {
+                              tabNum = 0;
+                            });
+                          },
+                          icon: Icon(
+                            FontAwesomeIcons.bookOpenReader,
+                            color: tabNum == 0 ? iconcolor : inactivecolor,
+                          ),
+                        ),
+                        IconButton(
+                          splashColor: Colors.transparent,
+                          color: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          onPressed: () {
+                            setState(() {
+                              tabNum = 1;
+                            });
+                          },
+                          icon: Icon(
+                            FontAwesomeIcons.solidImage,
+                            color: tabNum == 1 ? iconcolor : inactivecolor,
+                          ),
+                        ),
+                        // IconButton(
+                        //   splashColor: Colors.transparent,
+                        //   color: Colors.transparent,
+                        //   hoverColor: Colors.transparent,
+                        //   highlightColor: Colors.transparent,
+                        //   focusColor: Colors.transparent,
+                        //   onPressed: () {
+                        //     setState(() {
+                        //       tabNum = 2;
+                        //     });
+                        //   },
+                        //   icon: Icon(
+                        //     FontAwesomeIcons.heartPulse,
+                        //     color: tabNum == 2 ? iconcolor : inactivecolor,
+                        //   ),
+                        // ),
+                      ]),
                 ),
               ),
             ),

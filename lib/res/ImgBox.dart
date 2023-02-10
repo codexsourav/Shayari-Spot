@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_downloader/image_downloader.dart';
 import 'package:mysyri/Models/appinfo.dart';
 import 'package:mysyri/res/MySnackBox.dart';
@@ -40,7 +41,8 @@ class _ImgBoxState extends State<ImgBox> {
           ),
         ),
       );
-      var imageId = await ImageDownloader.downloadImage(url, destination: AndroidDestinationType.directoryPictures);
+      var imageId = await ImageDownloader.downloadImage(url,
+          destination: AndroidDestinationType.directoryPictures);
 
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -124,7 +126,8 @@ class _ImgBoxState extends State<ImgBox> {
                         title: "Copy Link",
                         onpress: () async {
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          FlutterClipboard.copy('hello flutter friends').then((value) {
+                          FlutterClipboard.copy('hello flutter friends')
+                              .then((value) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               mysnackbar(
                                 msg: " Copy To Clipbord",
@@ -138,7 +141,10 @@ class _ImgBoxState extends State<ImgBox> {
                           });
                         }),
                     const SizedBox(height: 20),
-                    btnAction(iconname: Icons.whatsapp_rounded, title: "Share", onpress: shareImage),
+                    btnAction(
+                        iconname: FontAwesomeIcons.whatsapp,
+                        title: "Share",
+                        onpress: shareImage),
                     const SizedBox(height: 20),
                     btnAction(
                       iconname: Icons.download,
@@ -177,7 +183,10 @@ class _ImgBoxState extends State<ImgBox> {
             const SizedBox(height: 8),
             Text(
               "$title",
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 10),
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 10),
             ),
           ],
         ),
