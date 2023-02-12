@@ -30,8 +30,8 @@ class _EditPageState extends State<EditPage> {
   late String shayari;
   late TextEditingController textcontroller;
   WidgetsToImageController imgcontroller = WidgetsToImageController();
-  var adload;
-  late RewardedInterstitialAd rewordedad;
+  InterstitialAd? adload = null;
+  RewardedInterstitialAd? rewordedad = null;
   bool pro = false;
 
 // loadadfunction
@@ -45,6 +45,9 @@ class _EditPageState extends State<EditPage> {
               adload = ad;
             },
             onAdFailedToLoad: (LoadAdError error) {
+              setState(() {
+                adload = null;
+              });
               if (kDebugMode) {
                 print('InterstitialAd failed to load: $error');
               }
@@ -63,6 +66,9 @@ class _EditPageState extends State<EditPage> {
           rewordedad = ad;
         },
         onAdFailedToLoad: (e) {
+          setState(() {
+            rewordedad = null;
+          });
           if (kDebugMode) {
             print('////////// Ads Load Field');
           }
@@ -161,12 +167,13 @@ class _EditPageState extends State<EditPage> {
     );
 
     if (adload != null) {
-      adload.show();
+      adload!.show();
       loaads();
     }
   }
 
   proPopup() async {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       mysnackbar(
         msg: "   Show A Video To Remove Watermark",
@@ -174,13 +181,28 @@ class _EditPageState extends State<EditPage> {
         onpress: () {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           if (rewordedad != null) {
-            rewordedad.show(
-                onUserEarnedReward: (AdWithoutView ad, RewardItem rewardItem) {
-              setState(() {
-                pro = true;
-              });
-            });
+            rewordedad!.show(
+              onUserEarnedReward: (AdWithoutView ad, RewardItem rewardItem) {
+                setState(() {
+                  pro = true;
+                  rewordedad = null;
+                });
+              },
+            );
           } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              mysnackbar(
+                msg: " Loading Ads...",
+                color: alertblackcolor,
+                onpress: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+                icon: Icon(
+                  Icons.video_label_outlined,
+                  color: iconcolor,
+                ),
+              ),
+            );
             rewordadsload();
           }
         },
@@ -212,12 +234,7 @@ class _EditPageState extends State<EditPage> {
           });
           return false;
         } else {
-          if (adload != null) {
-            adload.show();
-            return true;
-          } else {
-            return true;
-          }
+          return true;
         }
       },
       child: Scaffold(
@@ -227,9 +244,6 @@ class _EditPageState extends State<EditPage> {
           backgroundColor: bgcolor,
           leading: IconButton(
             onPressed: () {
-              if (adload != null) {
-                adload.show();
-              }
               Navigator.of(context).pop();
             },
             icon: const Icon(
@@ -317,7 +331,12 @@ class _EditPageState extends State<EditPage> {
                             ),
                           ),
                         ),
-                        !pro ? watermark() : const SizedBox(width: 0),
+                        !pro
+                            ? GestureDetector(
+                                onTap: proPopup,
+                                child: watermark(),
+                              )
+                            : const SizedBox(width: 0),
                       ],
                     ),
                   ),

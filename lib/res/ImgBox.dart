@@ -35,6 +35,9 @@ class _ImgBoxState extends State<ImgBox> {
         mysnackbar(
           msg: "Start Downloading...",
           color: alertblackcolor,
+          onpress: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
           icon: Icon(
             Icons.download,
             color: iconcolor,
@@ -52,6 +55,9 @@ class _ImgBoxState extends State<ImgBox> {
         mysnackbar(
           msg: "Downloading Complete",
           color: alertblackcolor,
+          onpress: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
           icon: Icon(
             Icons.download_done_rounded,
             color: iconcolor,
@@ -76,6 +82,9 @@ class _ImgBoxState extends State<ImgBox> {
       mysnackbar(
         msg: "  Loading Image...",
         color: const Color.fromARGB(255, 37, 37, 37),
+        onpress: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
         icon: const Icon(
           Icons.downloading_rounded,
           color: Colors.white,
@@ -130,10 +139,15 @@ class _ImgBoxState extends State<ImgBox> {
                               .then((value) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               mysnackbar(
-                                msg: " Copy To Clipbord",
+                                msg: " Link Copy To Clipbord",
+                                onpress: () {
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                },
                                 color: const Color.fromARGB(255, 37, 37, 37),
                                 icon: const Icon(
                                   Icons.copy,
+                                  size: 17,
                                   color: Colors.white,
                                 ),
                               ),

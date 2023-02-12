@@ -19,10 +19,9 @@ class ShriPage extends StatefulWidget {
 }
 
 class _ShriPageState extends State<ShriPage> {
-  var adload;
+  InterstitialAd? adload;
   final t2s = FlutterTts();
   var playindex;
-  var adstime = 0;
 
 // load ads
   loadads() {
@@ -51,18 +50,12 @@ class _ShriPageState extends State<ShriPage> {
 
   Future<bool> _willPopCallback() async {
     t2s.stop();
-    return true;
-  }
 
-//show ads
-  showads() async {
     if (adload != null) {
-      await t2s.stop();
-      setState(() {
-        adstime = 0;
-        playindex = null;
-      });
-      adload.show();
+      adload!.show();
+      return true;
+    } else {
+      return true;
     }
   }
 
@@ -81,16 +74,6 @@ class _ShriPageState extends State<ShriPage> {
 
 // lets speek
   palyshayari(name, index) async {
-// show ad on speek 5 times
-
-    if (adstime >= 7) {
-      showads();
-      Future.delayed(const Duration(seconds: 15), () {
-        loadads();
-      });
-      return false;
-    }
-
     if (index == playindex) {
       await t2s.pause();
       setState(() {
@@ -101,7 +84,6 @@ class _ShriPageState extends State<ShriPage> {
 
     setState(() {
       playindex = index;
-      adstime++;
     });
     t2s.stop();
     speek(name.toString());
@@ -133,7 +115,12 @@ class _ShriPageState extends State<ShriPage> {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                if (adload != null) {
+                  adload!.show();
+                  Navigator.of(context).pop();
+                } else {
+                  Navigator.of(context).pop();
+                }
               },
             ),
             title: Text(
