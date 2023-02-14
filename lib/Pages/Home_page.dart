@@ -7,8 +7,7 @@ import 'package:mysyri/Models/constents.dart';
 import 'package:mysyri/res/TitleBox.dart';
 
 class HomePage extends StatefulWidget {
-  final ScrollController controller;
-  HomePage({super.key, required this.controller});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -29,13 +28,15 @@ class _HomePageState extends State<HomePage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
-              controller: widget.controller,
               padding: const EdgeInsets.all(20),
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 List<QueryDocumentSnapshot<Object?>> doc = snapshot.data!.docs;
                 List maindata = doc.reversed.toList();
-                return TitleBox(context: context, title: maindata[index]['name'], data: maindata[index]['content']);
+                return TitleBox(
+                    context: context,
+                    title: maindata[index]['name'],
+                    data: maindata[index]['content']);
               },
             );
           } else {

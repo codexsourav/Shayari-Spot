@@ -2,8 +2,9 @@
     package="com.codexsourav.shayarispot">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    
    <application
-        android:label="Shayari Spot"
+        android:label="Shayari App"
         android:name="${applicationName}"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">

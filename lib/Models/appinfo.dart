@@ -9,11 +9,11 @@ Brightness statusbaricon = Brightness.light;
 String dvtheme = brightness.name;
 // colors app
 Color bgcolor = dvtheme != 'dark'
-    ? Color.fromARGB(255, 75, 44, 133)
-    : Color.fromARGB(255, 22, 21, 21);
+    ? const Color.fromARGB(255, 75, 44, 133)
+    : const Color.fromARGB(255, 22, 21, 21);
 Color boxcolor = dvtheme != 'dark'
     ? const Color.fromARGB(68, 120, 62, 187)
-    : const Color.fromARGB(255, 51, 51, 51);
+    : const Color.fromARGB(255, 32, 32, 32);
 Color iconcolor = dvtheme != 'dark'
     ? const Color.fromARGB(255, 255, 255, 255)
     : const Color.fromARGB(255, 255, 255, 255);
@@ -42,8 +42,8 @@ Color tpiconcolor = dvtheme != 'dark'
     ? const Color.fromARGB(117, 255, 255, 255)
     : const Color.fromARGB(137, 255, 255, 255);
 Color bgbottambarcolor = dvtheme != 'dark'
-    ? Color.fromARGB(108, 69, 36, 131)
-    : Color.fromARGB(94, 0, 0, 0);
+    ? const Color.fromARGB(108, 69, 36, 131)
+    : const Color.fromARGB(94, 0, 0, 0);
 
 // socail media info
 const String websiteurl = 'https://codexsourav.vercel.app/';

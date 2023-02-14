@@ -18,9 +18,11 @@ import 'package:share_plus/share_plus.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
 
 class EditPage extends StatefulWidget {
-  final shayari;
+  final String shayari;
+  final bool showappbar;
 
-  const EditPage({super.key, required this.shayari});
+  const EditPage(
+      {super.key, this.shayari = 'Write Here..', this.showappbar = true});
 
   @override
   State<EditPage> createState() => _EditPageState();
@@ -33,7 +35,7 @@ class _EditPageState extends State<EditPage> {
   InterstitialAd? adload = null;
   RewardedInterstitialAd? rewordedad = null;
   bool pro = false;
-
+  bool laodingad = false;
 // loadadfunction
   loaads() {
     if (AdsId().showads) {
@@ -45,11 +47,9 @@ class _EditPageState extends State<EditPage> {
               adload = ad;
             },
             onAdFailedToLoad: (LoadAdError error) {
-              setState(() {
-                adload = null;
-              });
+              adload = null;
               if (kDebugMode) {
-                print('InterstitialAd failed to load: $error');
+                print('InterstitialAd failed to load:');
               }
             },
           ));
@@ -58,23 +58,35 @@ class _EditPageState extends State<EditPage> {
 
 // set reworded ads
   rewordadsload() async {
-    await RewardedInterstitialAd.load(
-      adUnitId: AdsId().rewardedads,
-      request: const AdRequest(),
-      rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
-        onAdLoaded: (ad) {
-          rewordedad = ad;
-        },
-        onAdFailedToLoad: (e) {
-          setState(() {
-            rewordedad = null;
-          });
-          if (kDebugMode) {
-            print('////////// Ads Load Field');
-          }
-        },
-      ),
-    );
+    if (AdsId().showads) {
+      if (laodingad) {
+        print('///// not loading');
+        return false;
+      } else {
+        print('/////loading');
+        laodingad = true;
+
+        await RewardedInterstitialAd.load(
+          adUnitId: AdsId().rewardedads,
+          request: const AdRequest(),
+          rewardedInterstitialAdLoadCallback:
+              RewardedInterstitialAdLoadCallback(
+            onAdLoaded: (ad) {
+              rewordedad = ad;
+              laodingad = false;
+              print('///// loaded ad');
+            },
+            onAdFailedToLoad: (e) {
+              laodingad = false;
+              rewordedad = null;
+              if (kDebugMode) {
+                print('////////// Ads Load Field');
+              }
+            },
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -83,9 +95,10 @@ class _EditPageState extends State<EditPage> {
     shayari = widget.shayari;
     textcontroller = TextEditingController(text: widget.shayari);
 
-// fo ads
-    loaads();
-    rewordadsload();
+    if (widget.showappbar) {
+      loaads();
+      rewordadsload();
+    }
   }
 
   int clicktab = 0;
@@ -168,7 +181,6 @@ class _EditPageState extends State<EditPage> {
 
     if (adload != null) {
       adload!.show();
-      loaads();
     }
   }
 
@@ -193,7 +205,7 @@ class _EditPageState extends State<EditPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               mysnackbar(
                 msg: " Loading Ads...",
-                color: alertblackcolor,
+                color: alertcolor,
                 onpress: () {
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 },
@@ -203,6 +215,7 @@ class _EditPageState extends State<EditPage> {
                 ),
               ),
             );
+
             rewordadsload();
           }
         },
@@ -242,15 +255,17 @@ class _EditPageState extends State<EditPage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: bgcolor,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios_rounded,
-              size: 18,
-            ),
-          ),
+          leading: widget.showappbar
+              ? IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back_ios_rounded,
+                    size: 18,
+                  ),
+                )
+              : SizedBox(),
           actions: [
             IconButton(
               disabledColor: Colors.yellow,
@@ -284,60 +299,68 @@ class _EditPageState extends State<EditPage> {
               child: WidgetsToImage(
                 controller: imgcontroller,
                 child: ClipRRect(
-                  child: Container(
-                    height: shight,
-                    width: swidth,
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        image: DecorationImage(
-                          alignment: Alignment.center,
-                          matchTextDirection: true,
-                          repeat: ImageRepeat.noRepeat,
-                          fit: BoxFit.cover,
-                          image: AssetImage("assets/bgimages/$imgnum.jpg"),
-                        )),
-                    child: Stack(
-                      children: [
-                        BackdropFilter(
-                          filter: ImageFilter.blur(
-                            sigmaX: bgblur,
-                            sigmaY: bgblur,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        clicktab = 0;
+                      });
+                    },
+                    child: Container(
+                      height: shight,
+                      width: swidth,
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          image: DecorationImage(
+                            alignment: Alignment.center,
+                            matchTextDirection: true,
+                            repeat: ImageRepeat.noRepeat,
+                            fit: BoxFit.cover,
+                            image: AssetImage("assets/bgimages/$imgnum.jpg"),
+                          )),
+                      child: Stack(
+                        children: [
+                          BackdropFilter(
+                            filter: ImageFilter.blur(
+                              sigmaX: bgblur,
+                              sigmaY: bgblur,
+                            ),
+                            child: Container(
+                              color: sbgcolor,
+                            ),
                           ),
-                          child: Container(
-                            color: sbgcolor,
-                          ),
-                        ),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: GestureDetector(
-                              onDoubleTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Edittext();
-                                  },
-                                );
-                              },
-                              child: Text(
-                                shayari,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: textsize,
-                                  color: textcolor,
-                                  fontFamily: '$fontname',
+                          Center(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Edittext();
+                                    },
+                                  );
+                                },
+                                child: Text(
+                                  shayari,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: textsize,
+                                    color: textcolor,
+                                    fontFamily: '$fontname',
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        !pro
-                            ? GestureDetector(
-                                onTap: proPopup,
-                                child: watermark(),
-                              )
-                            : const SizedBox(width: 0),
-                      ],
+                          !pro
+                              ? GestureDetector(
+                                  onTap: proPopup,
+                                  child: watermark(),
+                                )
+                              : const SizedBox(width: 0),
+                        ],
+                      ),
                     ),
                   ),
                 ),

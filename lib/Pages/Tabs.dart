@@ -1,12 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mysyri/Models/appinfo.dart';
+import 'package:mysyri/Pages/EditPage.dart';
 import 'package:mysyri/Pages/Home_page.dart';
 import 'package:mysyri/Pages/Image_Page.dart';
+import 'package:mysyri/Pages/LatestPage.dart';
 import 'package:mysyri/res/MyDrawer.dart';
 
 import 'package:share_plus/share_plus.dart';
@@ -19,31 +21,35 @@ class Tabs extends StatefulWidget {
 }
 
 class _TabsState extends State<Tabs> {
+  final t2s = FlutterTts();
   int tabNum = 0;
-  bool _showBottam = false;
-  ScrollController controller = ScrollController();
   var pages;
 
   @override
   void initState() {
     super.initState();
-    pages = [HomePage(controller: controller), const ImagePage()];
-    controller.addListener(() {
-      bool res =
-          controller.position.userScrollDirection != ScrollDirection.forward;
-      if (res != _showBottam) {
-        setState(() {
-          _showBottam = res;
-        });
-      }
-    });
+    pages = [
+      const LatestPage(),
+      HomePage(),
+      const EditPage(showappbar: false),
+      const ImagePage()
+    ];
   }
+
+  List titles = [
+    'Shayari For You',
+    'All Categories',
+    'Editor',
+    'Image Shayari'
+  ];
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (tabNum != 0) {
+        if (tabNum == 2) {
+          return false;
+        } else if (tabNum != 0) {
           setState(() {
             tabNum = 0;
           });
@@ -53,107 +59,77 @@ class _TabsState extends State<Tabs> {
         }
       },
       child: Scaffold(
-        extendBody: true,
-        backgroundColor: tabNum == 1 ? blackcolor : bgcolor,
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: whitecolor),
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: tabNum == 1 ? blackcolor : bgcolor,
-            statusBarIconBrightness: statusbaricon,
-            statusBarBrightness: statusbaricon,
-          ),
-          elevation: 0.0,
-          backgroundColor: tabNum == 1 ? blackcolor : bgcolor,
-          centerTitle: true,
-          title: Text(
-            apptitle,
-            style: TextStyle(
-                color: whitecolor, fontSize: 15, fontWeight: FontWeight.w300),
-          ),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Share.share(applinkshareinfo);
-                },
-                icon: const Icon(
-                  Icons.share_rounded,
-                  size: 18,
-                )),
-          ],
-        ),
-        body: pages[tabNum],
-        bottomNavigationBar: AnimatedContainer(
-          duration: const Duration(milliseconds: 400),
-          color: Colors.transparent,
-          height: !_showBottam ? 100 : 0,
-          child: Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  color: tabNum == 0
-                      ? bgbottambarcolor
-                      : const Color.fromARGB(94, 0, 0, 0),
-                  width: MediaQuery.of(context).size.width - 180,
-                  height: 60,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          splashColor: Colors.transparent,
-                          color: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          onPressed: () {
-                            setState(() {
-                              tabNum = 0;
-                            });
-                          },
-                          icon: Icon(
-                            FontAwesomeIcons.bookOpenReader,
-                            color: tabNum == 0 ? iconcolor : inactivecolor,
-                          ),
-                        ),
-                        IconButton(
-                          splashColor: Colors.transparent,
-                          color: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          onPressed: () {
-                            setState(() {
-                              tabNum = 1;
-                            });
-                          },
-                          icon: Icon(
-                            FontAwesomeIcons.solidImage,
-                            color: tabNum == 1 ? iconcolor : inactivecolor,
-                          ),
-                        ),
-                        // IconButton(
-                        //   splashColor: Colors.transparent,
-                        //   color: Colors.transparent,
-                        //   hoverColor: Colors.transparent,
-                        //   highlightColor: Colors.transparent,
-                        //   focusColor: Colors.transparent,
-                        //   onPressed: () {
-                        //     setState(() {
-                        //       tabNum = 2;
-                        //     });
-                        //   },
-                        //   icon: Icon(
-                        //     FontAwesomeIcons.heartPulse,
-                        //     color: tabNum == 2 ? iconcolor : inactivecolor,
-                        //   ),
-                        // ),
-                      ]),
+        backgroundColor: tabNum == 3 ? blackcolor : bgcolor,
+        appBar: tabNum != 2
+            ? AppBar(
+                iconTheme: IconThemeData(color: whitecolor),
+                systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: tabNum == 3 ? blackcolor : bgcolor,
+                  statusBarIconBrightness: statusbaricon,
+                  statusBarBrightness: statusbaricon,
                 ),
+                elevation: 0.0,
+                backgroundColor: tabNum == 3 ? blackcolor : bgcolor,
+                centerTitle: true,
+                title: Text(
+                  titles[tabNum].toString(),
+                  style: TextStyle(
+                      color: whitecolor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w300),
+                ),
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        Share.share(applinkshareinfo);
+                      },
+                      icon: const Icon(
+                        Icons.share_rounded,
+                        size: 18,
+                      )),
+                ],
+              )
+            : null,
+        body: pages[tabNum],
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: tabNum == 3 ? blackcolor : bgcolor,
+          selectedItemColor: iconcolor,
+          unselectedItemColor: inactivecolor,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          selectedFontSize: 10,
+          type: BottomNavigationBarType.fixed,
+          unselectedFontSize: 10,
+          iconSize: 20,
+          currentIndex: tabNum,
+          onTap: (index) {
+            t2s.stop();
+            setState(() {
+              tabNum = index;
+            });
+          },
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.home), label: 'Lattest'),
+            BottomNavigationBarItem(
+              icon: Icon(
+                FontAwesomeIcons.bookOpenReader,
               ),
+              label: 'Category',
             ),
-          ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                FontAwesomeIcons.paintRoller,
+              ),
+              label: 'editor',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                FontAwesomeIcons.image,
+              ),
+              label: 'images',
+            ),
+          ],
         ),
         drawer: const MyDrawer(),
       ),
