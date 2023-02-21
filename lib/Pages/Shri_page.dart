@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-
 import 'package:mysyri/Models/ads/adsid.dart';
 import 'package:mysyri/Models/appinfo.dart';
 import 'package:mysyri/res/MybannerAd.dart';

@@ -20,7 +20,8 @@ Widget shyriBox(
     children: [
       Container(
         margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+        padding:
+            const EdgeInsets.only(top: 30, right: 25, left: 25, bottom: 15),
         decoration: BoxDecoration(
             color: boxcolor, borderRadius: BorderRadius.circular(10)),
         width: double.infinity,
@@ -31,12 +32,14 @@ Widget shyriBox(
               name.toString(),
               style: TextStyle(
                 color: whitecolor,
+                fontSize: 17,
               ),
             ),
           ),
           const SizedBox(height: 25),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               IconButton(
                 onPressed: () async {

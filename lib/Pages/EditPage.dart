@@ -21,8 +21,7 @@ class EditPage extends StatefulWidget {
   final String shayari;
   final bool showappbar;
 
-  const EditPage(
-      {super.key, this.shayari = 'Write Here..', this.showappbar = true});
+  const EditPage({super.key, this.shayari = '', this.showappbar = true});
 
   @override
   State<EditPage> createState() => _EditPageState();
@@ -32,38 +31,16 @@ class _EditPageState extends State<EditPage> {
   late String shayari;
   late TextEditingController textcontroller;
   WidgetsToImageController imgcontroller = WidgetsToImageController();
-  InterstitialAd? adload = null;
-  RewardedInterstitialAd? rewordedad = null;
+  RewardedInterstitialAd? rewordedad;
   bool pro = false;
   bool laodingad = false;
-// loadadfunction
-  loaads() {
-    if (AdsId().showads) {
-      InterstitialAd.load(
-          adUnitId: AdsId().adsInterstitial,
-          request: const AdRequest(),
-          adLoadCallback: InterstitialAdLoadCallback(
-            onAdLoaded: (InterstitialAd ad) {
-              adload = ad;
-            },
-            onAdFailedToLoad: (LoadAdError error) {
-              adload = null;
-              if (kDebugMode) {
-                print('InterstitialAd failed to load:');
-              }
-            },
-          ));
-    }
-  }
 
 // set reworded ads
   rewordadsload() async {
     if (AdsId().showads) {
       if (laodingad) {
-        print('///// not loading');
         return false;
       } else {
-        print('/////loading');
         laodingad = true;
 
         await RewardedInterstitialAd.load(
@@ -74,14 +51,10 @@ class _EditPageState extends State<EditPage> {
             onAdLoaded: (ad) {
               rewordedad = ad;
               laodingad = false;
-              print('///// loaded ad');
             },
             onAdFailedToLoad: (e) {
               laodingad = false;
               rewordedad = null;
-              if (kDebugMode) {
-                print('////////// Ads Load Field');
-              }
             },
           ),
         );
@@ -94,11 +67,6 @@ class _EditPageState extends State<EditPage> {
     super.initState();
     shayari = widget.shayari;
     textcontroller = TextEditingController(text: widget.shayari);
-
-    if (widget.showappbar) {
-      loaads();
-      rewordadsload();
-    }
   }
 
   int clicktab = 0;
@@ -178,10 +146,6 @@ class _EditPageState extends State<EditPage> {
         ),
       ),
     );
-
-    if (adload != null) {
-      adload!.show();
-    }
   }
 
   proPopup() async {
@@ -342,12 +306,12 @@ class _EditPageState extends State<EditPage> {
                                   );
                                 },
                                 child: Text(
-                                  shayari,
+                                  shayari.isEmpty ? 'Write Here...' : shayari,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: textsize,
                                     color: textcolor,
-                                    fontFamily: '$fontname',
+                                    fontFamily: fontname,
                                   ),
                                 ),
                               ),

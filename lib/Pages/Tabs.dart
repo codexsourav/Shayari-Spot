@@ -10,6 +10,7 @@ import 'package:mysyri/Pages/Home_page.dart';
 import 'package:mysyri/Pages/Image_Page.dart';
 import 'package:mysyri/Pages/LatestPage.dart';
 import 'package:mysyri/res/MyDrawer.dart';
+import 'package:mysyri/res/MySnackBox.dart';
 
 import 'package:share_plus/share_plus.dart';
 
@@ -23,14 +24,14 @@ class Tabs extends StatefulWidget {
 class _TabsState extends State<Tabs> {
   final t2s = FlutterTts();
   int tabNum = 0;
-  var pages;
+  var pages = [];
 
   @override
   void initState() {
     super.initState();
     pages = [
       const LatestPage(),
-      HomePage(),
+      const HomePage(),
       const EditPage(showappbar: false),
       const ImagePage()
     ];
@@ -47,9 +48,7 @@ class _TabsState extends State<Tabs> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (tabNum == 2) {
-          return false;
-        } else if (tabNum != 0) {
+        if (tabNum != 0) {
           setState(() {
             tabNum = 0;
           });
